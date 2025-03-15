@@ -26,14 +26,18 @@ pacman -Syu
 如果提示关闭终端，按提示操作后重新打开终端重新输入命令直至更新完成。
 
 ## 4. 安装编译工具链
-  - **工具说明**：
+  - **工具说明**： 
     - `mingw-w64-x86_64-gcc`：GCC编译器套件，包含C、C++、Fortran等编译器，用于将源代码编译成可执行文件。
+    - `mingw-w64-x86_64-gdb`：GDB是一个强大的调试工具，用于调试程序，查看程序运行时的状态。
     - `mingw-w64-x86_64-cmake`：CMake用于自动化构建过程，用于生成Makefile文件，简化编译过程。
     - `mingw-w64-x86_64-make`：Make是一个自动化的工程管理工具，通过读取Makefile文件中的规则来自动化编译、链接等步骤。
 
 - 依次执行以下命令：
   ```bash
   pacman -S mingw-w64-x86_64-gcc 
+  ```
+  ```bash
+  pacman -S mingw-w64-x86_64-gdb 
   ```
   ```bash
   pacman -S mingw-w64-x86_64-cmake 
