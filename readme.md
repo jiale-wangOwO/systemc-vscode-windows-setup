@@ -4,15 +4,20 @@ SystemC是一种用于硬件系统级建模的C++库，官方提供了Windows环
 ## 1. 安装Visual Studio Code
 VS Code是一款轻量级的开源代码编辑器，支持多种编程语言，拥有丰富的插件生态。
 
-访问[VS Code官网](https://code.visualstudio.com/)(https://code.visualstudio.com/)下载并安装。安装时建议勾选"Add to PATH"选项，方便以后在终端中直接使用`code`命令打开VS Code。
+访问[VS Code官网](https://code.visualstudio.com/) 下载并安装。安装时建议勾选"Add to PATH"选项，方便以后在终端中直接使用`code`命令打开VS Code。
 
-## 2. 安装MSYS2
+
+## 2. 下载SystemC源代码
+- 访问[Accellera官网](https://www.accellera.org/downloads/standards/systemc) 下载最新版本压缩包
+- 建议解压到c盘，路径不要有中文和空格。本文以解压后路径 `C:\systemc-3.0.0\`为例。
+
+## 3. 安装MSYS2
 MSYS2是一个在Windows上提供类Unix环境的软件包管理器，可以方便地安装编译工具链
 - 安装步骤：
-  1. 访问[MSYS2官网](https://www.msys2.org/)(https://www.msys2.org/)下载安装程序
+  1. 访问[MSYS2官网](https://www.msys2.org/) 下载安装程序
   2. 安装路径建议保持默认（`C:\msys64`）（建议路径不要有中文和空格）
-  3. 安装完成后打开 **MSYS2 MSYS** 终端（开始菜单搜索，上一步安装好有多个程序，注意名字不要进错了）
-  4. 在终端中执行以下命令更新软件包数据库：
+  3. 安装中可能卡在50%一会儿，需要一段时间，安装完成后打开 **MSYS2 MSYS** 终端（开始菜单搜索，上一步安装好有多个程序，注意名字不要进错了）
+  4. 在终端中执行以下命令更新软件包数据库（粘贴快捷键：`Shift`+`Insert`）：
 ```bash
 pacman -Syu  
 ```
@@ -20,7 +25,7 @@ pacman -Syu
 
 如果提示关闭终端，按提示操作后重新打开终端重新输入命令直至更新完成。
 
-## 3. 安装编译工具链
+## 4. 安装编译工具链
   - **工具说明**：
     - `mingw-w64-x86_64-gcc`：GCC编译器套件，包含C、C++、Fortran等编译器，用于将源代码编译成可执行文件。
     - `mingw-w64-x86_64-cmake`：CMake用于自动化构建过程，用于生成Makefile文件，简化编译过程。
@@ -38,22 +43,20 @@ pacman -Syu
   ```
 - 安装成功后，关闭msys2终端。
 
-## 4. 配置环境变量
+## 5. 配置环境变量
 让系统识别编译工具的位置
 - 操作步骤：
   1. 右键「此电脑」→「属性」→「高级系统设置」
-  2. 在「环境变量」→「环境变量」中找到`Path`变量，添加：
+  2. 在「环境变量」→「系统变量」中找到`Path`变量，添加：
      ```
      C:\msys64\mingw64\bin
+     ```
+     ```
      C:\msys64\usr\bin
      ```
-     如果安装在其他路径，请修改为实际路径
+     如果安装在其他路径，请修改为实际路径。添加后务必点击确定保存。
   3. 验证：打开CMD输入 `gcc --version` 显示出GCC版本信息，则安装正确。
 
-
-## 5. 获取SystemC源代码
-- 访问[Accellera官网](https://accellera.org/)(https://accellera.org/)下载最新版本压缩包
-- 建议解压到c盘，路径不要有中文和空格。本文以解压后路径 `C:\systemc-3.0.0\`为例。
 
 ## 6. CMake配置
 - **为什么需要CMake**：自动处理编译依赖，生成适合的构建系统
@@ -65,7 +68,7 @@ pacman -Syu
      mkdir build   # 创建独立的构建目录
      cd build      # 进入构建目录
      ```
-  3. 生成构建配置：
+  3. 生成构建配置（!!注意修改后面的路径！）：
     ```bash
     # 生成构建配置，指定调试模式、C++17标准、禁用C++扩展，并设置安装目录
     cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_EXTENSIONS=OFF -DCMAKE_INSTALL_PREFIX="C:/systemc-3.0.0/build" ..
@@ -86,7 +89,7 @@ cmake --build . --config Debug --target examples/check
 ```bash
 cmake --build . --config Debug --target install
 ```
-截止到这一步，SystemC库已经安装到了C:/systemc-3.0.0/install目录下。可以关闭MSYS2 MinGW 64-bit终端。
+截止到这一步，SystemC库已经安装到了C:/systemc-3.0.0/build目录下。可以关闭MSYS2 MinGW 64-bit终端。
 
 ## 8. VS Code开发环境配置
 从这一步开始，我们将使用VS Code编辑器进行SystemC程序开发。下面通过hello world程序演示如何配置VS Code环境。
@@ -130,8 +133,8 @@ int sc_main(int argc, char* argv[]) {
             "args": [
                 "-fdiagnostics-color=always",  
                 "-g",           
-                "-I", "C:/systemc-3.0.0/install/include",  // SystemC头文件路径，根据systemc安装路径修改
-                "-L", "C:/systemc-3.0.0/install/lib",  // SystemC库文件路径，根据systemc安装路径修改
+                "-I", "C:/systemc-3.0.0/build/include",  // SystemC头文件路径，根据systemc安装路径修改
+                "-L", "C:/systemc-3.0.0/build/lib",  // SystemC库文件路径，根据systemc安装路径修改
                 "-lsystemc",  
                 "${file}",      
                 "-o",       
@@ -161,7 +164,7 @@ int sc_main(int argc, char* argv[]) {
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/systemc-3.0.0/install/include"   // SystemC头文件路径，根据systemc安装路径修改
+                "C:/systemc-3.0.0/build/include"   // SystemC头文件路径，根据systemc安装路径修改
             ],
             "defines": [
                 "_DEBUG",

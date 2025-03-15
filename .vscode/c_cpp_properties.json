@@ -4,7 +4,7 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/systemc-3.0.0/install/include" 
+                "C:/systemc-3.0.0/build/include" 
             ],
             "defines": [
                 "_DEBUG",

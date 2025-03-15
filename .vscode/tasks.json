@@ -8,8 +8,8 @@
             "args": [
                 "-fdiagnostics-color=always",  
                 "-g",           
-                "-I", "C:/systemc-3.0.0/install/include",
-                "-L", "C:/systemc-3.0.0/install/lib", 
+                "-I", "C:/systemc-3.0.0/build/include",
+                "-L", "C:/systemc-3.0.0/build/lib", 
                 "-lsystemc",  
                 "${file}",      
                 "-o",       
